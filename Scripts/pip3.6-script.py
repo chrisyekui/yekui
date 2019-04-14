@@ -1,4 +1,4 @@
-#!D:\python\Scripts\python.exe
+#!D:\yekui\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==9.0.3','console_scripts','pip3.6'
 __requires__ = 'pip==9.0.3'
 import re

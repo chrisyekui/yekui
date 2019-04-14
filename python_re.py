@@ -1,4 +1,5 @@
 import re
+import requests
 
 content= "hello 123 4567 World_This is a regex Demo"
 #常规匹配
@@ -82,7 +83,7 @@ print(result9.group())
 print(result9.group(1))
 print(result9.group(2))
 
-#re.findall
+#re.findall 搜索字符串，以列表的形式返回全部能匹配的子串
 result10 = re.findall('<li.*?href="(.*?)" singer="(.*?)">(.*?)</a>',html,re.S)
 print(result10)
 print(type(result10))
@@ -91,5 +92,20 @@ for i in result10:
     print(i[0],i[1],i[2])
 
 
+#re.sub 替换字符串中每一个匹配的子串后返回替换后的字符串;re.sub(正则表达式，替换成的字符串，原字符串)
 
 
+content5 = "Extra things hello 123455 World_this is a regex Demo extra things"
+result11 = re.sub("\d+",'yekui',content5)
+print(result11)
+#这里需要注意的一个问题是\1是获取第一个匹配的结果，为了防止转义字符的问题，我们需要在前面加上r
+result12 = re.sub('(\d+)',r'\1 789',content5)
+print(result12)
+
+
+#豆瓣练习
+content6 = requests.get("https://book.douban.com/")
+# print(content6.text)
+pattern = re.compile('<li.*?cover.*?src="(.*?)".*?"more-meta".*?title=">(.*?)".*?author">(.*?)</span.*?year"></span>.*?publisher">(.*?)</span>.*?</li>',re.S)
+result13 =re.findall(pattern,content6.text)
+print(result13)
