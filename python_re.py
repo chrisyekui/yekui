@@ -105,7 +105,8 @@ print(result12)
 
 #豆瓣练习
 content6 = requests.get("https://book.douban.com/")
-# print(content6.text)
+print(content6.text)
 pattern = re.compile('<li.*?cover.*?src="(.*?)".*?"more-meta".*?title=">(.*?)".*?author">(.*?)</span.*?year"></span>.*?publisher">(.*?)</span>.*?</li>',re.S)
 result13 =re.findall(pattern,content6.text)
 print(result13)
+
