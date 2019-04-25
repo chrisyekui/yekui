@@ -34,16 +34,33 @@ browser = webdriver.Chrome(executable_path =r'C:\Users\Administrator\AppData\Loc
 # print(lis1)
 # print(lis2)
 # browser.close()
+#
+#
+# #元素交互操作
+# browser.get('http://www.taobao.com')
+# input_str = browser.find_element_by_id('q')
+# input_str.send_keys('ipad')
+# time.sleep(1)
+# input_str.clear()
+# input_str.send_keys('Mac Pro')
+# button =  browser.find_element_by_class_name('search-button')
+# time.sleep(1)
+# button.click()
 
+#交互动作
 from selenium.webdriver import ActionChains
 url = 'http://www.runoob.com/try/try.php?filename=jqueryui-api-droppable'
 browser.get(url)
 browser.switch_to.frame('iframeResult')
-source = browser.find_element_by_css_selector('#draggable')
-target = browser.find_element_by_css_selector('#droppable')
+# source = browser.find_element_by_css_selector('#draggable')
+# target = browser.find_element_by_css_selector('#droppable')
+source = browser.find_element_by_id('draggable')
+target = browser.find_element_by_id('droppable')
+time.sleep(5)
 actions = ActionChains(browser)
 actions.drag_and_drop(source, target)
 actions.perform()
+
 
 
 
