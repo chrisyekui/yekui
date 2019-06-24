@@ -1,6 +1,8 @@
 import urllib.request
 import os
 import time
+import re
+
 
 def url_open(url):
     req = urllib.request.Request(url)
@@ -13,25 +15,28 @@ def url_open(url):
 
 def get_page(url):
     html = url_open(url).decode('utf-8')
+    print(html)
 
-    a = html.find('current-comment-page') + 23
-    b = html.find(']',a)
-    return html[a:b]
+    # a = html.find('current-comment-page') + 23
+    # b = html.find(']',a)
+    # return html[a:b]
 
 def find_imgs(url):
     html = url_open(url).decode('utf-8')
+    print(html)
     img_address = []
 
-    a = html.find('img src=')
 
-    while a!= -1:
-        b = html.find('jpg',a,a+255)
-
-        if b!= -1:
-            img_address.append('http:'+html[a+9:b+3])
-        else:
-            b = a + 9
-        a = html.find('img src=',b)
+    # a = html.find('img src=')
+    #
+    # while a!= -1:
+    #     b = html.find('jpg',a,a+255)
+    #
+    #     if b!= -1:
+    #         img_address.append('http:'+html[a+9:b+3])
+    #     else:
+    #         b = a + 9
+    #     a = html.find('img src=',b)
 
     for each in img_address:
 #       print(each)
