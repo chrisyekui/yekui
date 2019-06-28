@@ -125,8 +125,6 @@ def Save_Picture(url):
             picture = 'https:' + Picture_real_url
         elif Picture_real_url[:3] == '/im':
             picture = 'https://image.mn52.com' + Picture_real_url
-        else:
-            pass
         filename = (picture).split('/')[-1]
         print(filename)
         #尝试使用打开浏览器方式获取，太慢，放弃，UI自动化操作还是不靠谱
