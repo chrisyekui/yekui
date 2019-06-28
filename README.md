@@ -1,3 +1,4 @@
 # yekui
 first project
-练习
+
+python studing

@@ -71,7 +71,7 @@ def get_classpage_message(url):
     for classpage_message in classpage_messages:
         print(classpage_message)
         concretePicture_url = "https://www.mn52.com" + classpage_message[0]
-        #过滤特殊字符，只保留中文
+        #过滤特殊字符，只保留中英文和数字
         # str = re.sub('[a-zA-Z0-9’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', "", classpage_message[1])
         str = re.sub('[’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', '', classpage_message[1])
         if os.path.exists(str):
@@ -118,17 +118,26 @@ def Save_Picture(url):
     Picture_real_urls = re.findall('<img src="(.*?)" />', str(Picture_vague_urls), re.S)
     print(Picture_real_urls)
     for Picture_real_url in Picture_real_urls:
+        #做个间隔，发现下得太慢了，放弃
         # time.sleep(0.5)
-        picture = 'https:' + Picture_real_url
+        #网页可能不是一个人写的有时匹配到的是//image.mn52.com/img/,有时直接匹配到后面的/img
+        if Picture_real_url[:3] == '//i':
+            picture = 'https:' + Picture_real_url
+        elif Picture_real_url[:3] == '/im':
+            picture = 'https://image.mn52.com' + Picture_real_url
+        else:
+            pass
         filename = (picture).split('/')[-1]
         print(filename)
+        #尝试使用打开浏览器方式获取，太慢，放弃，UI自动化操作还是不靠谱
         # browser = webdriver.Chrome(
         #     executable_path=r'C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe')
         # browser.get(picture)
-        # time.sleep(10)
+        # time.sleep(2)
         # browser.close()
         with open(filename, 'wb') as f:
             # img = url_open(picture)
+            #尤其注意Referer
             headers1 = {
                 'Referer': url,
                 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36',
@@ -139,7 +148,8 @@ def Save_Picture(url):
                 'Connection': 'keep-alive'
             }
             try:
-                pic = requests.get(picture, headers=headers1)
+                #设置5秒超时限制
+                pic = requests.get(picture, headers=headers1, timeout = 10)
                 # print(pic.text)
                 f.write(pic.content)
             except Exception as e:
