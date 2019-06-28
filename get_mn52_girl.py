@@ -71,11 +71,23 @@ def get_classpage_message(url):
     for classpage_message in classpage_messages:
         print(classpage_message)
         concretePicture_url = "https://www.mn52.com" + classpage_message[0]
-        if os.path.exists(str(classpage_message[1])):
-            os.chdir(classpage_message[1])
+        #过滤特殊字符，只保留中文
+        # str = re.sub('[a-zA-Z0-9’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', "", classpage_message[1])
+        str = re.sub('[’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', '', classpage_message[1])
+        if os.path.exists(str):
+            try:
+                # os.chdir(classpage_message[1].replace(':','').replace('|',''))
+                os.chdir(str)
+            except NotADirectoryError:
+                pass
         else:
-            os.mkdir(classpage_message[1])
-            os.chdir(classpage_message[1])
+            try:
+                # os.mkdir(classpage_message[1].replace(':','').replace('|',''))
+                # os.chdir(classpage_message[1].replace(':','').replace('|',''))
+                os.mkdir(str)
+                os.chdir(str)
+            except NotADirectoryError:
+                pass
         Save_Picture(concretePicture_url)
         os.chdir(os.path.pardir)
         # time.sleep(2)
@@ -90,9 +102,13 @@ def get_PicturepPage_nums(url):
         '<div class="img-wrap"><a href="javascript:;" hidefocus="true"><img src=.*?title="第(.*?)张" rel=.*?>', html,
         re.S)
     # print(PicturePage_nums)
-    print(PicturePage_nums[-1])
-    # 返回页码的最大值
-    return PicturePage_nums[-1]
+    try:
+        print(PicturePage_nums[-1])
+        # 返回页码的最大值
+        return PicturePage_nums[-1]
+    except IndexError:
+        pass
+
 
 
 def Save_Picture(url):
@@ -102,7 +118,7 @@ def Save_Picture(url):
     Picture_real_urls = re.findall('<img src="(.*?)" />', str(Picture_vague_urls), re.S)
     print(Picture_real_urls)
     for Picture_real_url in Picture_real_urls:
-        time.sleep(0.5)
+        # time.sleep(0.5)
         picture = 'https:' + Picture_real_url
         filename = (picture).split('/')[-1]
         print(filename)
