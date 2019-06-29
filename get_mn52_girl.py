@@ -28,7 +28,7 @@ def get_class(url):
     results = re.findall('<li.*?href=\'\/(.*?)\/\'\s><span>(.*?)</span></a></li>', html, re.S)
     print(results)
     for result in results:
-        if result[1] not in ['性感美女','头像集', '婚纱图片''萌宠图片']:
+        if result[1] not in ['性感美女','清纯美女','头像集', '婚纱图片''萌宠图片']:
             print(result[1])
             # 已有目录不用重新创建
             if os.path.exists(result[1]):
@@ -72,9 +72,13 @@ def get_classpage_message(url):
     for classpage_message in classpage_messages:
         print(classpage_message)
         concretePicture_url = "https://www.mn52.com" + classpage_message[0]
-        #过滤特殊字符，只保留中英文和数字，否则无法创建文件夹
-        # str = re.sub('[a-zA-Z0-9’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', "", classpage_message[1])
-        str = re.sub('[’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', '', classpage_message[1])
+        #判空
+        if classpage_message[1] == '':
+            str = '临时文件夹'
+        else:
+            # 过滤特殊字符，只保留中英文和数字，否则无法创建文件夹
+            # str = re.sub('[a-zA-Z0-9’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', "", classpage_message[1])
+            str = re.sub('[’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+', '', classpage_message[1])
         if os.path.exists(str):
             try:
                 # 此方法适合碰到一个异常解决一个异常
@@ -88,6 +92,7 @@ def get_classpage_message(url):
                 # os.chdir(classpage_message[1].replace(':','').replace('|',''))
                 os.mkdir(str)
                 os.chdir(str)
+            # except (NotADirectoryError,FileNotFoundError) as e:
             except NotADirectoryError:
                 pass
         Save_Picture(concretePicture_url)
@@ -141,7 +146,7 @@ def Save_Picture(url):
         # browser.close()
         with open(filename, 'wb') as f:
             # img = url_open(picture)
-            #尤其注意Referer
+
             UserAgentlist = ['Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36',
                              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/4.0.1',
                              'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
@@ -158,8 +163,8 @@ def Save_Picture(url):
                              'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; SE 2.X MetaSr 1.0; SE 2.X MetaSr 1.0; .NET CLR 2.0.50727; SE 2.X MetaSr 1.0)',
                              'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)',
                              'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Avant Browser)']
-
             USER_AGENT = random.choice(UserAgentlist)
+            #尤其注意Referer
             headers1 = {
                 'Referer': url,
                 'User-Agent': USER_AGENT,
