@@ -10,7 +10,7 @@ while i <= 6:
             # print(redballs)
             i += 1
         else:
-            print('the num is in list')
+            print('the num %s is in list' %redball)
     else:
         print('only can select between 1-32')
         continue
@@ -23,7 +23,7 @@ while j <= 2:
             # print(blueballs)
             j += 1
         else:
-            print('the num is in list')
+            print('the num %s is in list' %blueball)
     else:
         print('only can select between 1-16')
         continue
